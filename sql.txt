@@ -1,0 +1,37 @@
+SELECT temp.point, temp.date, Income_o.inc, Outcome_o.out
+FROM (
+SELECT Income_o.point, Income_o.date FROM Income_o 
+UNION
+SELECT Outcome_o.point, Outcome_o.date FROM Outcome_o) as temp
+left join Income_o ON Income_o.point=temp.point and Income_o.date=temp.date
+left join Outcome_o ON Outcome_o.point=temp.point and Outcome_o.date=temp.date
+________________________________
+
+SELECT country, CAST(AVG(bore*bore*bore/2.0) as NUMERIC (6,2)) as mw
+FROM Classes left join Ships ON Classes.class=Ships.class
+left join (
+SELECT ship from Outcomes WHERE Outcomes.result='sunk') as new
+
+ON Classes.class=new.ship
+GROUP BY country
+______________________________
+SELECT country, CAST(AVG(bore*bore*bore/2.0) as NUMERIC (6,2)) as mw
+FROM Classes left join
+
+(SELECT name, class from Ships
+UNION
+Select ship, class from Outcomes left join Classes On Classes.class=Outcomes.ship where result='sunk'
+) as new
+ON Classes.class=new.class
+
+Group by country
+___________________
+SELECT country, CAST(AVG(bore*bore*bore/2.0) as NUMERIC (6,2)) as mw
+from Outcomes left join Classes On Classes.class=Outcomes.ship
+where result ='sunk' and Classes.class IS NOT NULL
+GROUP BY country
+
+UNION
+SELECT country, CAST(AVG(bore*bore*bore/2.0) as NUMERIC (6,2)) as mw
+FROM Classes left join Ships ON Classes.class=Ships.class
+GROUP BY country
