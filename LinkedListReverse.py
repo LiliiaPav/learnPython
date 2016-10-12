@@ -26,3 +26,25 @@ def Reverse(head):
     head=tail
     head.next=curr
     return head
+
+
+def Reverse(head):
+    curr=head
+    prev=None
+    nextN=None
+    while curr:
+        nextN=curr.next
+        curr.next=prev
+        prev=curr
+        curr=nextN
+    return prev
+
+
+def Reverse(head):
+    if not head.next: return head
+    else:
+        new_head=Reverse(head.next)
+
+    head.next.next=head
+    head.next=None
+    return new_head
